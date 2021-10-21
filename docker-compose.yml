@@ -1,0 +1,33 @@
+version: "3.9"  # optional since v1.27.0
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.21.3
+    ports:
+      - 80:80
+    volumes:
+      - ./uploads:/usr/share/nginx/html/imgs
+      - ./nginx:/etc/nginx/conf.d/
+    links:
+      - api
+
+  api:
+    container_name: nest_api
+    build: .
+    volumes: 
+      - .:/home/api
+      - /home/api/node_modules
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+
+  database:
+    container_name: nest_db
+    image: postgres:13
+    environment: 
+      POSTGRES_DB: ${DB_DB}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432

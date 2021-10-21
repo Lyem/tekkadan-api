@@ -1,0 +1,117 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Moldura {
+  id: ID!
+  nome: String!
+  foto: String!
+}
+
+type Page {
+  id: ID!
+  page: String!
+  chapter: Chapter!
+}
+
+type Category {
+  id: ID!
+  nome: String!
+}
+
+type Author {
+  id: ID!
+  nome: String!
+  foto: String!
+  obras: [Obra!]!
+}
+
+type Obra {
+  id: ID!
+  nome: String!
+  categorias: [Category!]!
+  autor: [Author!]!
+  artista: [Author!]!
+  capa: String!
+  fundo: String!
+  ondeoanimeparou: String!
+  created_at: DateTime!
+  update_at: DateTime!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Chapter {
+  id: ID!
+  titulo: String!
+  numero: String!
+  pages: [Page!]!
+}
+
+type User {
+  id: ID!
+  nome: String!
+  foto: String!
+  fundo: String!
+  moldura_atual: String!
+  descricao: String!
+  permissao: Float!
+  created_at: DateTime!
+  update_at: DateTime!
+  molduras: [Moldura!]!
+}
+
+type AuthType {
+  user: User!
+  token: String!
+}
+
+type Query {
+  user(id: String!): User!
+  userByName(name: String!): User!
+  users: [User!]!
+  me: User!
+  obra(id: String!): Obra!
+  obras: [Obra!]!
+  moldura(id: String!): Moldura!
+  molduraByName(nome: String!): Moldura!
+  molduras: [Moldura!]!
+  author(id: String!): Author!
+  authors: [Author!]!
+  chapter(id: String!): Chapter!
+}
+
+type Mutation {
+  defaultUserPhotos(fundo: Boolean!, foto: Boolean!): User!
+  updateuserperm(user: String!, permissao: Float!): User!
+  updateUserTag(name: String!): User!
+  passtheowner(user: String!): User!
+  createUser(data: CreateUserInput!): AuthType!
+  login(data: AuthInput!): AuthType!
+  deleteObra(id: String!): Boolean!
+  giveMoldura(molduraid: String!, userid: String!): Boolean!
+  throwMoldura(molduraid: String!, userid: String!): Boolean!
+  selectMoldura(molduraid: String!): Boolean!
+  resetMoldura: Boolean!
+  deleteMoldura(id: String!): Boolean!
+  createCategory(nome: String!): Category!
+  updateCategory(nome: String!, id: String!): Category!
+  deleteCategory(id: String!): Boolean!
+  deleteAuthor(id: String!): Boolean!
+  deleteChapter(id: String!): Boolean!
+}
+
+input CreateUserInput {
+  nome: String!
+  senha: String!
+  email: String!
+}
+
+input AuthInput {
+  email: String!
+  senha: String!
+}
